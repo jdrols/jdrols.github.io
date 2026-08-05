@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Joseph Drolshagen — Software Engineer</title>
+<meta name="description" content="Joseph Drolshagen — software engineer in Charleston, SC. Co-creator of Amber, an open-source runtime for long-running AI agents." />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="theme-color" content="#f7f3ec" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jdrols.github.io/" />
+<meta property="og:title" content="Joseph Drolshagen — Software Engineer" />
+<meta property="og:description" content="Software engineer in Charleston, SC. Co-creator of Amber, an open-source runtime for long-running AI agents." />
+<meta property="og:image" content="https://jdrols.github.io/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Joseph Drolshagen — Software Engineer" />
+<meta name="twitter:description" content="Software engineer in Charleston, SC. Co-creator of Amber, an open-source runtime for long-running AI agents." />
+<meta name="twitter:image" content="https://jdrols.github.io/og.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f7f3ec;
+    --paper-raised: #fffdf8;
+    --ink: #1a1611;
+    --ink-soft: #57503f;
+    --ink-faint: #9a917d;
+    --rule: #ddd5c5;
+    --accent: #1d47b8;
+    --serif: "Fraunces", Georgia, serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  ::selection { background: var(--accent); color: var(--paper); }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1.1rem 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .topbar .ident { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .topbar nav { display: flex; gap: 1.8rem; }
+  .topbar nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .topbar nav a::before { content: "§ "; color: var(--ink-faint); }
+  .topbar nav a:hover { color: var(--accent); }
+  .topbar nav a:hover::before { color: var(--accent); }
+
+  /* ---------- layout shell ---------- */
+  .shell {
+    width: 100%;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 3rem;
+    align-items: center;
+    padding: 4rem 0;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 6.4vw, 5.2rem);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.4rem;
+  }
+  .hero .lede {
+    font-size: 1.18rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 34rem;
+    margin-bottom: 2rem;
+  }
+  .hero .lede strong { color: var(--ink); font-weight: 500; }
+  .hero .lede a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .hero .lede a:hover { color: var(--accent); border-color: var(--accent); }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 2.2rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+  }
+  .links a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.15rem;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .links a .arr { color: var(--accent); }
+  .links a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ---------- figure / toy ---------- */
+  .figure {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .figure .stage {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--rule);
+    background: var(--paper-raised);
+    overflow: hidden;
+    cursor: grab;
+  }
+  .figure .stage:active { cursor: grabbing; }
+  .figure .stage canvas { display: block; width: 100%; height: 100%; }
+  .figure .fallback {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .figure .fallback svg { width: 62%; height: 62%; }
+  /* ---------- colophon ---------- */
+  .colophon {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-width: 1160px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.4rem 2.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding: 3.2rem 0 3rem; gap: 2.4rem; }
+    .figure { max-width: 26rem; }
+    .topbar { padding: 1rem 1.4rem; }
+    .topbar nav { gap: 1.1rem; }
+    .shell { padding: 0 1.4rem; }
+    .colophon { padding: 1.4rem; }
+  }
+  @media (max-width: 620px) {
+    .topbar nav a:nth-child(2) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="ident" href="/">jdrols.github.io</a>
+  <nav>
+    <a href="mailto:jdrols@gmail.com">Email</a>
+    <a href="https://github.com/jdrols" target="_blank" rel="noopener">GitHub</a>
+    <a href="Joseph-Drolshagen-Resume.pdf" target="_blank" rel="noopener">Resume</a>
+  </nav>
+</header>
+
+<main class="shell">
+
+  <div class="hero">
+    <div>
+      <h1>Hi,<br />I'm Joe.</h1>
+      <p class="lede">
+        I'm a software engineer in Charleston. Right now I'm co-creating
+        <a href="https://amber-runtime.github.io" target="_blank" rel="noopener"><strong>Amber</strong></a>, an open-source runtime for
+        long-running AI agents. If you want to see more of my work, it's in
+        the links below. Or just email me; I'm always happy to chat!
+      </p>
+      <div class="links">
+        <a href="mailto:jdrols@gmail.com">jdrols@gmail.com</a>
+        <a href="https://github.com/jdrols" target="_blank" rel="noopener">github.com/jdrols <span class="arr">↗</span></a>
+        <a href="Joseph-Drolshagen-Resume.pdf" target="_blank" rel="noopener">resume <span class="arr">↓</span></a>
+        <a href="https://amber-runtime.github.io/case/" target="_blank" rel="noopener">amber case study <span class="arr">↗</span></a>
+      </div>
+    </div>
+
+    <figure class="figure">
+      <div class="stage" id="toy-stage" aria-label="Interactive wireframe icosahedron, drag to rotate">
+        <div class="fallback" id="toy-fallback">
+          <svg viewBox="0 0 200 200" fill="none" stroke="#1a1611" stroke-width="1">
+            <polygon points="100,15 175,65 150,165 50,165 25,65" opacity="0.9"/>
+            <polygon points="100,55 145,85 130,145 70,145 55,85" opacity="0.55"/>
+            <line x1="100" y1="15" x2="100" y2="55" opacity="0.4"/>
+            <line x1="175" y1="65" x2="145" y2="85" opacity="0.4"/>
+            <line x1="150" y1="165" x2="130" y2="145" opacity="0.4"/>
+            <line x1="50" y1="165" x2="70" y2="145" opacity="0.4"/>
+            <line x1="25" y1="65" x2="55" y2="85" opacity="0.4"/>
+            <circle cx="100" cy="15" r="3" fill="#1d47b8" stroke="none"/>
+          </svg>
+        </div>
+      </div>
+    </figure>
+  </div>
+
+</main>
+
+<footer class="colophon">
+  <span>(c) 2026</span>
+</footer>
+
+<script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js" } }
+</script>
+<script type="module">
+  const stage = document.getElementById("toy-stage");
+  const fallback = document.getElementById("toy-fallback");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Lazy-init: only load three.js when the stage is on screen and motion is welcome.
+  const canAnimate = !reduced && "IntersectionObserver" in window;
+
+  async function initToy() {
+    try {
+      const THREE = await import("three");
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      stage.appendChild(renderer.domElement);
+      fallback.style.display = "none";
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+      camera.position.set(0, 0, 5.6);
+
+      const group = new THREE.Group();
+      scene.add(group);
+
+      // Outer wireframe icosahedron
+      const geo = new THREE.IcosahedronGeometry(1.65, 1);
+      const wire = new THREE.LineSegments(
+        new THREE.WireframeGeometry(geo),
+        new THREE.LineBasicMaterial({ color: 0x1a1611, transparent: true, opacity: 0.5 })
+      );
+      group.add(wire);
+
+      // Inner solid core
+      const core = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(0.62, 0),
+        new THREE.MeshBasicMaterial({ color: 0x1d47b8, transparent: true, opacity: 0.9 })
+      );
+      group.add(core);
+
+      // Accent points at vertices
+      const points = new THREE.Points(
+        new THREE.IcosahedronGeometry(1.65, 1),
+        new THREE.PointsMaterial({ color: 0x1d47b8, size: 0.045 })
+      );
+      group.add(points);
+
+      group.rotation.set(0.4, 0.6, 0);
+
+      // Interaction state
+      let dragging = false, px = 0, py = 0;
+      let vx = 0.0016, vy = 0.0022; // idle drift
+      let tx = 0.0016, ty = 0.0022;
+
+      stage.addEventListener("pointerdown", (e) => {
+        dragging = true; px = e.clientX; py = e.clientY;
+        stage.setPointerCapture(e.pointerId);
+      });
+      stage.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - px, dy = e.clientY - py;
+        px = e.clientX; py = e.clientY;
+        group.rotation.y += dx * 0.006;
+        group.rotation.x += dy * 0.006;
+        tx = dy * 0.00025; ty = dx * 0.00025;
+      });
+      const release = () => { dragging = false; };
+      stage.addEventListener("pointerup", release);
+      stage.addEventListener("pointercancel", release);
+
+      function resize() {
+        const w = stage.clientWidth, h = stage.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      new ResizeObserver(resize).observe(stage);
+
+      let visible = true;
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(stage);
+
+      const clock = new THREE.Clock();
+      renderer.setAnimationLoop(() => {
+        if (!visible) return;
+        const t = clock.getElapsedTime();
+        // Ease spin velocity back toward idle drift
+        tx += (0.0016 - tx) * 0.02;
+        ty += (0.0022 - ty) * 0.02;
+        vx = tx; vy = ty;
+        if (!dragging) {
+          group.rotation.x += vx;
+          group.rotation.y += vy;
+        }
+        // Gentle breathing on the core
+        const s = 1 + Math.sin(t * 1.4) * 0.08;
+        core.scale.setScalar(s);
+        renderer.render(scene, camera);
+      });
+    } catch (err) {
+      // WebGL unavailable or CDN blocked, the static SVG fallback stays.
+      console.warn("icosahedron unavailable:", err);
+    }
+  }
+
+  if (canAnimate) {
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { io.disconnect(); initToy(); }
+    });
+    io.observe(stage);
+  }
+</script>
+
+</body>
+</html>

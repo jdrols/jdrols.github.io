@@ -1,0 +1,9 @@
+{
+  "name": "jdrols-personal-page",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Preview helper only — the site itself is a single static index.html, no build step.",
+  "scripts": {
+    "dev": "node serve.js"
+  }
+}
