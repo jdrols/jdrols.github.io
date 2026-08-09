@@ -21,6 +21,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("theme"); } catch (e) {}
+    if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.theme = t;
+  })();
+</script>
 <style>
   :root {
     --paper: #f7f3ec;
@@ -33,6 +41,33 @@
     --serif: "Fraunces", Georgia, serif;
     --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   }
+
+
+  :root[data-theme="dark"] {
+    --paper: #16130e;
+    --paper-raised: #1e1a13;
+    --ink: #ece5d6;
+    --ink-soft: #b2a892;
+    --ink-faint: #7d7462;
+    --rule: #38322a;
+    --accent: #7d9bff;
+  }
+  [data-theme="dark"] .band img { filter: brightness(0.88); }
+  .theme-toggle {
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    background: none;
+    border: none;
+    padding: 0 0 0.1rem;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+  .theme-toggle::before { content: "§ "; color: var(--ink-faint); }
+  .figure .fallback { color: var(--ink); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -202,7 +237,7 @@
 
 <header class="topbar">
   <a class="ident" href="/">jdrols.github.io</a>
-  <span class="locale">Charleston, SC</span>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">Dark</button>
 </header>
 
 <main class="shell">
@@ -230,7 +265,7 @@
 <figure class="figure cell-figure">
       <div class="stage" id="toy-stage" aria-label="Interactive wireframe icosahedron, drag to rotate">
         <div class="fallback" id="toy-fallback">
-          <svg viewBox="0 0 200 200" fill="none" stroke="#1a1611" stroke-width="1">
+          <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1">
             <polygon points="100,15 175,65 150,165 50,165 25,65" opacity="0.9"/>
             <polygon points="100,55 145,85 130,145 70,145 55,85" opacity="0.55"/>
             <line x1="100" y1="15" x2="100" y2="55" opacity="0.4"/>
@@ -238,7 +273,7 @@
             <line x1="150" y1="165" x2="130" y2="145" opacity="0.4"/>
             <line x1="50" y1="165" x2="70" y2="145" opacity="0.4"/>
             <line x1="25" y1="65" x2="55" y2="85" opacity="0.4"/>
-            <circle cx="100" cy="15" r="3" fill="#1d47b8" stroke="none"/>
+            <circle cx="100" cy="15" r="3" style="fill: var(--accent)" stroke="none"/>
           </svg>
         </div>
       </div>
@@ -263,6 +298,33 @@
   { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js" } }
 </script>
 <script type="module">
+
+  // --- theme toggle ---
+  const rootEl = document.documentElement;
+  const toggleBtn = document.getElementById("theme-toggle");
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  function syncThemeUI() {
+    const dark = rootEl.dataset.theme === "dark";
+    toggleBtn.textContent = dark ? "Light" : "Dark";
+    if (themeMeta) themeMeta.content = dark ? "#16130e" : "#f7f3ec";
+    window.dispatchEvent(new Event("themechange"));
+  }
+  function hasSavedTheme() {
+    try { return !!localStorage.getItem("theme"); } catch (e) { return false; }
+  }
+  toggleBtn.addEventListener("click", () => {
+    rootEl.dataset.theme = rootEl.dataset.theme === "dark" ? "light" : "dark";
+    try { localStorage.setItem("theme", rootEl.dataset.theme); } catch (e) {}
+    syncThemeUI();
+  });
+  // Auto mode: follow OS changes live, but only until the user picks manually.
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (hasSavedTheme()) return;
+    rootEl.dataset.theme = e.matches ? "dark" : "light";
+    syncThemeUI();
+  });
+  syncThemeUI();
+
   const stage = document.getElementById("toy-stage");
   const fallback = document.getElementById("toy-fallback");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -309,6 +371,15 @@
       group.add(points);
 
       group.rotation.set(0.4, 0.6, 0);
+
+      function applyToyTheme() {
+        const dark = document.documentElement.dataset.theme === "dark";
+        wire.material.color.set(dark ? 0xece5d6 : 0x1a1611);
+        core.material.color.set(dark ? 0x7d9bff : 0x1d47b8);
+        points.material.color.set(dark ? 0x7d9bff : 0x1d47b8);
+      }
+      applyToyTheme();
+      window.addEventListener("themechange", applyToyTheme);
 
       // Interaction state
       let dragging = false, px = 0, py = 0;
