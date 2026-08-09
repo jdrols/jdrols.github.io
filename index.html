@@ -63,7 +63,7 @@
     text-transform: uppercase;
   }
   .topbar .ident { color: var(--ink); text-decoration: none; font-weight: 500; }
-  .topbar nav { display: flex; gap: 1.8rem; }
+  .topbar .locale { color: var(--ink-faint); }
   .topbar nav a {
     color: var(--ink-soft);
     text-decoration: none;
@@ -85,37 +85,45 @@
     justify-content: center;
   }
 
-  /* ---------- hero ---------- */
-  .hero {
+  /* ---------- hero grid ---------- */
+  .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    gap: 3rem;
-    align-items: center;
-    padding: 4rem 0;
+    grid-template-areas:
+      "copy  figure"
+      "links figure"
+      "band  band";
+    column-gap: 3rem;
+    row-gap: 1.6rem;
+    align-items: end;
+    padding: 4rem 0 3rem;
   }
-  .hero h1 {
+  .cell-copy { grid-area: copy; align-self: end; transform: translateY(-1.2rem); }
+  .cell-links { grid-area: links; align-self: end; }
+  .cell-figure { grid-area: figure; align-self: end; }
+  .band { grid-area: band; margin: 1.4rem 0 0; border: 1px solid var(--rule); }
+  .band img { display: block; width: 100%; height: auto; }
+  .hero-grid h1 {
     font-size: clamp(3rem, 6.4vw, 5.2rem);
     font-weight: 400;
     line-height: 1.02;
     letter-spacing: -0.02em;
     margin-bottom: 1.4rem;
   }
-  .hero .lede {
+  .hero-grid .lede {
     font-size: 1.18rem;
     line-height: 1.65;
     color: var(--ink-soft);
     max-width: 34rem;
-    margin-bottom: 2rem;
   }
-  .hero .lede strong { color: var(--ink); font-weight: 500; }
-  .hero .lede a {
+  .hero-grid .lede strong { color: var(--ink); font-weight: 500; }
+  .hero-grid .lede a {
     color: var(--ink);
     text-decoration: none;
     border-bottom: 1px solid var(--rule);
     transition: color 0.15s, border-color 0.15s;
   }
-  .hero .lede a:hover { color: var(--accent); border-color: var(--accent); }
-
+  .hero-grid .lede a:hover { color: var(--accent); border-color: var(--accent); }
   .links {
     display: flex;
     flex-wrap: wrap;
@@ -151,9 +159,10 @@
   .figure .stage canvas { display: block; width: 100%; height: 100%; }
   .figure .fallback {
     position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: end; justify-content: center;
   }
   .figure .fallback svg { width: 62%; height: 62%; }
+  
   /* ---------- colophon ---------- */
   .colophon {
     display: flex;
@@ -174,33 +183,32 @@
 
   /* ---------- responsive ---------- */
   @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; padding: 3.2rem 0 3rem; gap: 2.4rem; }
-    .figure { max-width: 26rem; }
+    .hero-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas: "copy" "links" "figure" "band";
+      row-gap: 2.2rem;
+      padding: 3.2rem 0 3rem;
+    }
+    .cell-copy { transform: none; }
+    .cell-figure { justify-self: center; width: min(100%, 19rem); }
     .topbar { padding: 1rem 1.4rem; }
-    .topbar nav { gap: 1.1rem; }
     .shell { padding: 0 1.4rem; }
     .colophon { padding: 1.4rem; }
   }
-  @media (max-width: 620px) {
-    .topbar nav a:nth-child(2) { display: none; }
-  }
+
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <a class="ident" href="/">jdrols.github.io</a>
-  <nav>
-    <a href="mailto:jdrols@gmail.com">Email</a>
-    <a href="https://github.com/jdrols" target="_blank" rel="noopener">GitHub</a>
-    <a href="Joseph-Drolshagen-Resume.pdf" target="_blank" rel="noopener">Resume</a>
-  </nav>
+  <span class="locale">Charleston, SC</span>
 </header>
 
 <main class="shell">
 
-  <div class="hero">
-    <div>
+  <div class="hero-grid">
+    <div class="cell-copy">
       <h1>Hi,<br />I'm Joe.</h1>
       <p class="lede">
         I'm a software engineer in Charleston. Right now I'm co-creating
@@ -208,6 +216,9 @@
         long-running AI agents. If you want to see more of my work, it's in
         the links below. Or just email me; I'm always happy to chat!
       </p>
+    </div>
+
+    <div class="cell-links">
       <div class="links">
         <a href="mailto:jdrols@gmail.com">jdrols@gmail.com</a>
         <a href="https://github.com/jdrols" target="_blank" rel="noopener">github.com/jdrols <span class="arr">↗</span></a>
@@ -216,7 +227,7 @@
       </div>
     </div>
 
-    <figure class="figure">
+<figure class="figure cell-figure">
       <div class="stage" id="toy-stage" aria-label="Interactive wireframe icosahedron, drag to rotate">
         <div class="fallback" id="toy-fallback">
           <svg viewBox="0 0 200 200" fill="none" stroke="#1a1611" stroke-width="1">
@@ -232,6 +243,14 @@
         </div>
       </div>
     </figure>
+
+  <figure class="band">
+    <img src="photo-band-1600.jpg"
+         srcset="photo-band-800.jpg 800w, photo-band-1600.jpg 1600w, photo-band-2560.jpg 2560w"
+         sizes="(max-width: 1160px) calc(100vw - 5rem), 1060px"
+         alt="Joe looking out over the marsh and river beneath the Ravenel Bridge, Charleston"
+         loading="lazy" />
+  </figure>
   </div>
 
 </main>
